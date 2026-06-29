@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <title>cumu</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>&#127925;</text></svg>">
+</head>
+<body>
+  <!-- Top Nav -->
+  <header class="top-nav" id="topNav">
+    <span class="wordmark-small">cumu</span>
+    <div class="nav-right">
+      <span id="navUser" class="mute caption"></span>
+      <button class="btn-icon" id="adminBtn" style="display:none" onclick="navigate('admin')">admin</button>
+      <button class="btn-secondary" onclick="logout()">logout</button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main id="mainContent" class="main-content"></main>
+
+  <!-- Now Playing Bar -->
+  <div class="now-playing-bar" id="nowPlayingBar" style="display:none">
+    <div class="np-info" id="npInfo"></div>
+    <div class="np-controls" id="npControls"></div>
+    <div class="np-progress">
+      <span id="npCurrentTime">0:00</span>
+      <input type="range" id="npSeek" value="0" min="0" max="100" step="0.1">
+      <span id="npDuration">0:00</span>
+    </div>
+  </div>
+
+  <!-- Bottom Nav -->
+  <nav class="bottom-nav">
+    <button class="nav-tab" data-page="home" onclick="navigate('home')">
+      <span class="nav-icon">[~]</span>
+      <span>home</span>
+    </button>
+    <button class="nav-tab" data-page="search" onclick="navigate('search')">
+      <span class="nav-icon">[?]</span>
+      <span>search</span>
+    </button>
+    <button class="nav-tab" data-page="library" onclick="navigate('library')">
+      <span class="nav-icon">[=]</span>
+      <span>library</span>
+    </button>
+  </nav>
+
+  <!-- Login Modal -->
+  <div class="modal-overlay" id="loginModal">
+    <div class="modal">
+      <pre class="wordmark">cumu</pre>
+      <form id="loginForm">
+        <div class="form-row">
+          <label>username</label>
+          <input type="text" name="username" required placeholder="username" autofocus />
+        </div>
+        <div class="form-row">
+          <label>password</label>
+          <input type="password" name="password" required placeholder="password" />
+        </div>
+        <div id="loginError" class="error-msg" style="display:none"></div>
+        <button type="submit" class="btn-primary">login &rarr;</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Song Context Menu -->
+  <div class="context-menu" id="contextMenu" style="display:none"></div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>
