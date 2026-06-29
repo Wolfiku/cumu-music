@@ -1,0 +1,33 @@
+# cumu — docker-compose
+# Usage:
+#   docker compose up -d
+#   docker compose logs -f
+#   docker compose pull && docker compose up -d   # update
+
+services:
+  cumu:
+    image: ghcr.io/wolfiku/cumu-music:latest
+    # Or build locally:
+    # build: .
+    container_name: cumu
+    restart: unless-stopped
+    ports:
+      - "${CUMU_PORT:-3000}:3000"
+    environment:
+      - NODE_ENV=production
+      - SESSION_SECRET=${SESSION_SECRET:-change-me-in-production}
+    volumes:
+      # Persistent database and session store
+      - cumu_data:/app/data
+      # Your music library — change the left side to your actual music folder
+      - ${MUSIC_PATH:-./music}:/music
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/auth/me"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  cumu_data:
+    driver: local
