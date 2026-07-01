@@ -13,6 +13,7 @@ const authRoutes  = require('./routes/auth');
 const apiRoutes   = require('./routes/api');
 const adminRoutes = require('./routes/admin');
 const streamRoutes = require('./routes/stream');
+const userRoutes  = require('./routes/user');
 
 const app = express();
 
@@ -42,11 +43,11 @@ app.use(session({
   cookie: { secure: false, maxAge: 7 * 24 * 60 * 60 * 1000 }
 }));
 
-// ── Setup guard ──────────────────────────────────────────────────────────────
+// ── Setup guard ──────────────────────────────────────────────────────────────────────────────
 // Static assets (css/js/fonts) must load even before setup is complete
 const ALWAYS_ALLOWED = ['/css/', '/js/', '/fonts/', '/favicon'];
 // API + auth routes that are needed during setup itself
-const SETUP_ALLOWED  = ['/auth/setup', '/auth/login', '/auth/logout', '/auth/me'];
+const SETUP_ALLOWED  = ['/auth/setup', '/auth/login', '/auth/logout', '/auth/me', '/user/'];
 
 function isSetupDone() {
   // Re-read from DB every time so we catch the moment setup completes
@@ -70,7 +71,7 @@ app.use((req, res, next) => {
   // All other requests → serve setup page
   return res.sendFile(path.join(__dirname, '../public/setup.html'));
 });
-// ─────────────────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────────
 
 // Static files
 app.use(express.static(path.join(__dirname, '../public')));
@@ -80,6 +81,7 @@ app.use('/auth',   authRoutes);
 app.use('/api',    apiRoutes);
 app.use('/admin',  adminRoutes);
 app.use('/stream', streamRoutes);
+app.use('/user',   userRoutes);
 
 // SPA catch-all
 app.get('*', (req, res) => {
