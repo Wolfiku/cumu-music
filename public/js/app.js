@@ -80,6 +80,7 @@
       document.getElementById('adminBtn').style.display = 'inline-flex';
     }
     loadPlaylists();
+    applyTheme(currentUser.theme || 'codec');
     navigate('home');
   }
 
@@ -125,6 +126,7 @@
     else if (page === 'playlist')   renderPlaylist(params);
     else if (page === 'song')       renderSong(params);
     else if (page === 'nowplaying') renderNowPlaying();
+    else if (page === 'settings')   initSettingsPage();
     window.scrollTo(0, 0);
   };
 
