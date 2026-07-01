@@ -9,7 +9,6 @@
   <link rel="stylesheet" href="/css/settings.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>&#127925;</text></svg>">
   <script>
-    // Apply persisted theme before first paint to avoid flash of unstyled content
     (function() {
       const t = localStorage.getItem('cumu_theme');
       if (t === 'standard') document.documentElement.setAttribute('data-theme', 'standard');
@@ -17,21 +16,33 @@
   </script>
 </head>
 <body>
-  <!-- Top Nav -->
   <header class="top-nav" id="topNav">
     <span class="wordmark-small">cumu</span>
     <div class="nav-right">
       <span id="navUser" class="mute caption"></span>
-      <button class="btn-icon" id="settingsBtn" onclick="navigate('settings')" aria-label="Settings">settings</button>
-      <button class="btn-icon" id="adminBtn" style="display:none" onclick="navigate('admin')">admin</button>
+
+      <button class="btn-icon icon-only" id="settingsBtn" onclick="navigate('settings')" aria-label="Settings" title="Settings">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 .6 1.65 1.65 0 0 0-.35 1.1V21a2 2 0 0 1-4 0v-.02a1.65 1.65 0 0 0-.35-1.1 1.65 1.65 0 0 0-1-.6 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-.6-1 1.65 1.65 0 0 0-1.1-.35H3a2 2 0 0 1 0-4h.02a1.65 1.65 0 0 0 1.1-.35 1.65 1.65 0 0 0 .6-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06A2 2 0 1 1 7.12 3.7l.06.06A1.65 1.65 0 0 0 9 4.6c.24-.3.53-.5 1-.6A1.65 1.65 0 0 0 10.35 3H10a2 2 0 0 1 4 0v.02c0 .42.14.83.35 1.1.47.1.76.3 1 .6a1.65 1.65 0 0 0 1.82-.33l.06-.06A2 2 0 1 1 20.3 7.12l-.06.06c-.3.24-.5.53-.6 1 .1.47.3.76.6 1z"></path>
+        </svg>
+      </button>
+
+      <button class="btn-icon icon-only" id="adminBtn" style="display:none" onclick="navigate('admin')" aria-label="Admin Dashboard" title="Admin Dashboard">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+          <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+          <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+          <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+        </svg>
+      </button>
+
       <button class="btn-secondary" onclick="logout()">logout</button>
     </div>
   </header>
 
-  <!-- Main Content -->
   <main id="mainContent" class="main-content"></main>
 
-  <!-- Now Playing Bar — clickable to open full now-playing view -->
   <div class="now-playing-bar" id="nowPlayingBar" style="display:none" role="region" aria-label="Now Playing">
     <div class="np-info" id="npInfo" style="cursor:pointer" onclick="navigate('nowplaying')" aria-label="Open now playing view"></div>
     <div class="np-controls" id="npControls" role="group" aria-label="Playback controls"></div>
@@ -42,23 +53,21 @@
     </div>
   </div>
 
-  <!-- Bottom Nav -->
   <nav class="bottom-nav" aria-label="Main navigation">
     <button class="nav-tab" data-page="home" onclick="navigate('home')" aria-label="Home">
-      <span class="nav-icon">[~]</span>
+      <span class="nav-icon">⌂</span>
       <span>home</span>
     </button>
     <button class="nav-tab" data-page="search" onclick="navigate('search')" aria-label="Search">
-      <span class="nav-icon">[?]</span>
+      <span class="nav-icon">⌕</span>
       <span>search</span>
     </button>
     <button class="nav-tab" data-page="library" onclick="navigate('library')" aria-label="Library">
-      <span class="nav-icon">[=]</span>
+      <span class="nav-icon">♫</span>
       <span>library</span>
     </button>
   </nav>
 
-  <!-- Login Modal -->
   <div class="modal-overlay" id="loginModal" role="dialog" aria-modal="true" aria-label="Login">
     <div class="modal">
       <pre class="wordmark">cumu</pre>
@@ -77,7 +86,6 @@
     </div>
   </div>
 
-  <!-- Song Context Menu -->
   <div class="context-menu" id="contextMenu" style="display:none" role="menu"></div>
 
   <script src="/js/app.js"></script>
