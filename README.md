@@ -3,54 +3,55 @@
 > A self-hosted music streaming application built with Node.js — own your music, own your data.
 
 ```
-                                  
   ██████╗██╗   ██╗███╗   ███╗██╗   ██╗
  ██╔════╝██║   ██║████╗ ████║██║   ██║
  ██║     ██║   ██║██╔████╔██║██║   ██║
  ██║     ██║   ██║██║╚██╔╝██║██║   ██║
  ╚██████╗╚██████╔╝██║ ╚═╝ ██║╚██████╔╝
-  ╚═════╝ ╚═════╝ ╚═╝     ╚═╝ ╚═════╝ 
-                                  
+  ╚═════╝ ╚═════╝ ╚═╝     ╚═╝ ╚═════╝
 ```
 
 ---
 
-## Table of Contents
+## Quick Install
 
-- [Features](#features)
-- [Requirements](#requirements)
-- [Installation](#installation)
-- [First-Time Setup](#first-time-setup)
-- [Usage](#usage)
-- [Admin Panel](#admin-panel)
-- [User Roles](#user-roles)
-- [API Reference](#api-reference)
-- [Configuration](#configuration)
-- [Project Structure](#project-structure)
-- [Tech Stack](#tech-stack)
-- [License](#license)
+```bash
+# 1. Clone
+git clone https://github.com/Wolfiku/cumu.git
+cd cumu
+
+# 2. Install dependencies
+npm install
+
+# 3. Start
+node src/server.js
+```
+
+On first start, cumu binds to **http://localhost:3000** by default and redirects you straight to the setup wizard. No config files needed — everything is configured in the browser.
+
+> To change the port, set `PORT=XXXX` in a `.env` file before starting.
 
 ---
 
 ## Features
 
 ```
-[+] First-time setup wizard          — configure everything in the browser, no config files needed
-[+] MP3 metadata auto-extraction     — title, artist, album, genre, year, track no., cover art
+[+] First-time setup wizard          — configure everything in the browser
+[+] MP3 / AAC / ALAC / FLAC support  — broad audio format compatibility
 [+] Album upload (bulk)              — drop an entire album folder at once
 [+] Single song upload               — with manual metadata override
-[+] Embedded cover art extraction    — reads artwork directly from MP3 ID3 tags
+[+] Embedded cover art extraction    — reads artwork directly from audio tags
 [+] External cover image upload      — attach a JPG/PNG as album artwork
 [+] Audio streaming with seek        — HTTP Range requests for instant scrubbing
-[+] Hörspielmodus (audiobook mode)   — 15-second forward/backward skip instead of next track
+[+] Spoken word mode                 — 15-second forward/backward skip (audiobooks, podcasts)
 [+] Playlists                        — create, manage, add/remove songs
 [+] Library                          — save favourite songs and albums
 [+] Search                           — full-text across songs, albums, artists, playlists
 [+] Recommendations                  — recently played, most played, newest additions
 [+] Artist pages                     — all albums and songs per artist
 [+] Album pages                      — tracklist with cover art, play-all button
-[+] Song info page                   — metadata detail view
-[+] Song edit page                   — admin/creator only
+[+] Now Playing page                 — full-screen view with 3-dot action menu
+[+] Song info / edit pages           — metadata detail and admin edit view
 [+] User management                  — admin can create/delete users and assign roles
 [+] Storage limit                    — configurable max library size with live progress bar
 [+] Responsive design                — works on mobile and desktop
@@ -77,8 +78,8 @@
 **1. Clone the repository**
 
 ```bash
-git clone https://github.com/Wolfiku/cumu-music.git
-cd cumu-music
+git clone https://github.com/Wolfiku/cumu.git
+cd cumu
 ```
 
 **2. Install dependencies**
@@ -87,7 +88,14 @@ cd cumu-music
 npm install
 ```
 
-**3. Start the server**
+**3. (Optional) Configure environment**
+
+```bash
+cp .env.example .env
+# edit .env if you want a different port or music path
+```
+
+**4. Start the server**
 
 ```bash
 node src/server.js
@@ -99,13 +107,15 @@ Or with auto-reload during development:
 npm run dev
 ```
 
-**4. Open the app**
+**5. Open the app**
 
 ```
 http://localhost:3000
 ```
 
 On first start you will be redirected to the setup wizard automatically.
+
+> **Default port is 3000.** To use a different port, set `PORT=XXXX` in `.env`.
 
 ---
 
@@ -116,11 +126,11 @@ When you open cumu for the first time, a setup wizard guides you through:
 ```
 [+] Admin account     — choose a username and a strong password
 [+] Server settings   — port (default: 3000) and bind address (default: 0.0.0.0)
-[+] Music library     — absolute path where your MP3 files will be stored
+[+] Music library     — absolute path where your audio files will be stored
 [+] Storage limit     — maximum total size of the music library in GB
 ```
 
-After submitting, the server saves everything to the SQLite database and redirects you straight into the app. No restart required.
+After submitting, the server saves everything to the SQLite database and redirects you into the app. No restart required.
 
 > **Tip:** If you want to redo the setup, delete `data/cumu.db` and restart the server.
 
@@ -138,46 +148,38 @@ After submitting, the server saves everything to the SQLite database and redirec
 
 ### Playing music
 
-- **Click any song row** to start playing immediately. The whole visible list becomes the queue.
+- **Click any song row** to start playing immediately.
 - The **Now Playing bar** appears at the bottom (above the nav).
-- Click the song title/cover in the Now Playing bar to open the song info page.
+- **Click the Now Playing bar** to open the full-screen Now Playing view.
+- The **three-dot menu** (`…`) on any song or in the Now Playing view gives you:
+  - Add to playlist
+  - Save to library
+  - View song info
+  - View album / artist
+  - Edit (admin/creator only)
 
-### Hörspielmodus (audiobook / radio play mode)
+### Spoken word mode (audiobooks & podcasts)
 
-Songs marked as *Hörspiel* use a different player layout:
+Songs marked as *spoken word* use a different player layout:
 
 ```
-  -15    [▶]    +15
+  ◀15    [▶]    15▶
 ```
 
-Instead of skip-to-next/previous, the buttons jump **15 seconds** forward or backward within the current track — perfect for audio dramas and podcasts.
+Instead of skip-to-next/previous, the buttons jump **15 seconds** forward or backward within the current track.
 
 Normal songs use the standard layout:
 
 ```
-  [◀◀]   [▶]   [▶▶]
+  [◀◀]   [▶]   [stop]   [▶▶]
 ```
 
 ### Playlists
 
 1. Go to **library** → click **[+] playlist**
 2. Enter a name and optional description
-3. Open any song's context menu (`…` button) → **[+] add to playlist**
-4. Open the playlist page to play, reorder or delete
-
-### Context menu
-
-Right-click or tap `…` on any song row to:
-
-```
-[▶] play
-song info
-view album
-view artist
-[+] add to playlist
-[+] save to library
-edit  (admin/creator only)
-```
+3. Open any song's context menu (`…`) → **add to playlist**
+4. Open the playlist page to play or delete
 
 ---
 
@@ -188,21 +190,21 @@ Access via the **admin** button in the top navigation bar (visible to admin and 
 ### Upload
 
 ```
-[+] drag & drop — drop one or multiple audio files onto the upload zone
+[+] drag & drop    — drop one or multiple audio files onto the upload zone
 [+] click to browse — standard file picker, supports multi-select
 [+] metadata override — manually set artist, album, title before uploading
-[+] cover image — attach a JPG/PNG as album artwork
-[+] Hörspiel flag — mark the entire upload batch as audiobook/radio play
+[+] cover image    — attach a JPG/PNG as album artwork
+[+] spoken word flag — mark the upload batch as audiobook/podcast
 ```
 
-Supported audio formats: `.mp3` `.m4a` `.flac` `.ogg` `.wav`
+Supported audio formats: `.mp3` `.m4a` `.aac` `.flac` `.ogg` `.wav`
 
 Metadata is extracted automatically from ID3/Vorbis tags. Manual fields override the extracted values.
 
 ### Songs tab
 
 - Lists every song in the library
-- **edit** — opens the song edit page (title, genre, year, track number, Hörspiel flag)
+- **edit** — opens the song edit page (title, genre, year, track number, spoken word flag)
 - **del** — permanently deletes the song and removes the file from disk
 
 ### Albums tab
@@ -368,7 +370,7 @@ pm2 startup
 ## Project Structure
 
 ```
-cumu-music/
+cumu/
 ├── src/
 │   ├── server.js           # Express app, middleware, routing
 │   ├── db.js               # SQLite schema, getDB(), getConfig(), setConfig()
