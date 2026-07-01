@@ -56,7 +56,7 @@ router.post('/login', async (req, res) => {
   req.session.role = user.role;
   req.session.username = user.username;
 
-  res.json({ success: true, user: { id: user.id, username: user.username, role: user.role } });
+  res.json({ success: true, user: { id: user.id, username: user.username, role: user.role, theme: user.theme || 'codec' } });
 });
 
 // POST /auth/logout
@@ -69,9 +69,9 @@ router.post('/logout', (req, res) => {
 router.get('/me', (req, res) => {
   if (!req.session.userId) return res.status(401).json({ error: 'Not authenticated' });
   const db = getDB();
-  const user = db.prepare('SELECT id, username, role FROM users WHERE id = ?').get(req.session.userId);
+  const user = db.prepare('SELECT id, username, role, theme FROM users WHERE id = ?').get(req.session.userId);
   if (!user) return res.status(401).json({ error: 'User not found' });
-  res.json(user);
+  res.json({ ...user, theme: user.theme || 'codec' });
 });
 
 module.exports = router;
